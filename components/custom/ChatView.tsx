@@ -98,8 +98,8 @@ function ChatView() {
     setUserInput("");
   };
   return (
-    messages&&<div className="relative h-[85vh] flex flex-col">
-      {messages&&<div className="flex-1 overflow-y-scroll no-scrollbar pl-5">
+    <div className="relative h-[85vh] flex flex-col">
+      {<div className="flex-1 overflow-y-scroll no-scrollbar pl-5">
         {messages.length>0&&messages?.map((msg: any, index: any) => (
           <div
             key={index}

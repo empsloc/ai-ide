@@ -42,10 +42,11 @@ function PricingModel() {
             onApprove={() => onPaymentSuccess()}
             createOrder={(data, actions) => {
               return actions.order.create({
+                intent: "CAPTURE",
                 purchase_units: [
                   {
                     amount: {
-                      value: pricing.price,
+                      value: pricing.price.toFixed(2),
                       currency_code: "USD",
                     },
                   },

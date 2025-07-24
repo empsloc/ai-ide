@@ -33,6 +33,7 @@ function ChatView() {
   useEffect(() => {
     id && GetWorkspaceData();
   }, [id]);
+
   const GetWorkspaceData = async () => {
     const result = await convex.query(api.workspace.GetWorkspace, {
       workspaceId: id,
@@ -97,9 +98,9 @@ function ChatView() {
     setUserInput("");
   };
   return (
-    <div className="relative h-[85vh] flex flex-col">
+    messages&&<div className="relative h-[85vh] flex flex-col">
       {messages&&<div className="flex-1 overflow-y-scroll no-scrollbar pl-5">
-        {messages?.map((msg: any, index: any) => (
+        {messages.length>0&&messages?.map((msg: any, index: any) => (
           <div
             key={index}
             className="p-3 rounded-lg mb-2 flex gap-2 items-start leading-7"

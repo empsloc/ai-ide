@@ -27,7 +27,7 @@ function Header() {
       {!userDetail?.name ? (
         <div className="flex gap-5">
           <ModeToggle />
-          <Button variant="ghost" className="cursor-pointer">
+          {/* <Button variant="ghost" className="cursor-pointer">
             Sign In
           </Button>
           <Button
@@ -35,7 +35,7 @@ function Header() {
             style={{ backgroundColor: Colors.BLUE }}
           >
             Get Started
-          </Button>
+          </Button> */}
         </div>
       ) : (
         path?.includes("workspace") && (

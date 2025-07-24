@@ -98,7 +98,7 @@ function ChatView() {
   };
   return (
     <div className="relative h-[85vh] flex flex-col">
-      <div className="flex-1 overflow-y-scroll no-scrollbar pl-5">
+      {messages&&<div className="flex-1 overflow-y-scroll no-scrollbar pl-5">
         {messages?.map((msg: any, index: any) => (
           <div
             key={index}
@@ -129,7 +129,7 @@ function ChatView() {
             <h2>Generating Response ...</h2>
           </div>
         )}
-      </div>
+      </div>}
 
       {/* input */}
       <div className="flex gap-2 item-end">

@@ -35,9 +35,9 @@ export function InfoAlert() {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>How to use</AlertDialogTitle>
+          <AlertDialogTitle>Developer's note</AlertDialogTitle>
           <AlertDialogDescription>
-            Click on <strong>Code</strong> to view the generated code and click on <strong>Preview</strong> to see the in-browser output.
+            Click on <strong>Code</strong> to view the generated code and click on <strong>Preview</strong> to see the in-browser output. If the output doesn't update or display then go to the code section and in the bottom right corner click on run.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

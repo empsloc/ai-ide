@@ -6,7 +6,7 @@ import Colors from "@/data/Colors";
 import Lookup from "@/data/Lookup";
 import axios from "axios";
 import { useConvex, useMutation } from "convex/react";
-import { ArrowRight, Link, Loader2Icon } from "lucide-react";
+import { ArrowRight, Link, Loader2Icon, Sidebar } from "lucide-react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
@@ -32,7 +32,12 @@ function ChatView() {
   const UpdateTokens = useMutation(api.users.UpdateToken);
   useEffect(() => {
     id && GetWorkspaceData();
+    
   }, [id]);
+  useEffect(() => {
+    
+    toggleSidebar();
+  }, []);
 
   const GetWorkspaceData = async () => {
     const result = await convex.query(api.workspace.GetWorkspace, {
@@ -99,8 +104,20 @@ function ChatView() {
   };
   return (
     <div className="relative h-[85vh] flex flex-col">
+      {userDetail && (
+          // <Image
+          //   className=" mt-40 rounded-full cursor-pointer"
+          //   src={userDetail?.picture}
+          //   alt="user"
+          //   width={40}
+          //   height={30}
+          //   onClick={toggleSidebar}
+          // />
+          <Sidebar className="cursor-pointer ml-5 mb-5 " onClick={toggleSidebar}/>
+        )}
       {<div className="flex-1 overflow-y-scroll no-scrollbar pl-5">
-        {messages.length>0&&messages?.map((msg: any, index: any) => (
+
+        {messages&&messages.length>0&&messages?.map((msg: any, index: any) => (
           <div
             key={index}
             className="p-3 rounded-lg mb-2 flex gap-2 items-start leading-7"
@@ -134,18 +151,19 @@ function ChatView() {
 
       {/* input */}
       <div className="flex gap-2 item-end">
-        {userDetail && (
-          <Image
-            className=" mt-40 rounded-full cursor-pointer"
-            src={userDetail?.picture}
-            alt="user"
-            width={40}
-            height={30}
-            onClick={toggleSidebar}
-          />
-        )}
+        {/* {userDetail && (
+          // <Image
+          //   className=" mt-40 rounded-full cursor-pointer"
+          //   src={userDetail?.picture}
+          //   alt="user"
+          //   width={40}
+          //   height={30}
+          //   onClick={toggleSidebar}
+          // />
+          <Sidebar className="cursor-pointer mt-40 " onClick={toggleSidebar}/>
+        )} */}
         <div
-          className="p-5 border rounded-xl max-w-xl w-full mt-3"
+          className="p-5 ml-5 border rounded-xl max-w-xl w-full mt-3"
           style={{ backgroundColor: Colors.BACKGROUND }}
         >
           <div className="flex gap-2">
@@ -163,7 +181,7 @@ function ChatView() {
             )}
           </div>
           <div>
-            <Link className="h-5 w-5" />
+            
           </div>
         </div>
       </div>

@@ -6,23 +6,14 @@ import { useRouter } from "next/navigation";
 function SideBarFooter() {
   const router = useRouter();
   const options = [
-    {
-      name: "Settings",
-      icon: Settings,
-    },
-    {
-      name: "Help Center",
-      icon: HelpCircle,
-    },
+   
+    
     {
       name: "My Subscription",
       icon: Wallet,
       path: "/pricing",
     },
-    {
-      name: "Sign Out",
-      icon: LogOut,
-    },
+   
   ];
 
   const onOptionClick = (option: any) => {
@@ -34,7 +25,7 @@ function SideBarFooter() {
         <Button
           onClick={() => onOptionClick(option)}
           variant="ghost"
-          className="w-full flex justify-start my-3"
+          className="w-full flex justify-start my-3 cursor-pointer"
           key={index}
         >
           <option.icon />

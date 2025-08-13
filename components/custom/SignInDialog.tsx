@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useContext } from "react";
 import {
   Dialog,
@@ -6,7 +6,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import Lookup from "@/data/Lookup";
 import { Button } from "../ui/button";
@@ -18,50 +17,62 @@ import { api } from "@/convex/_generated/api";
 import uuid4 from "uuid4";
 
 function SignInDialog({ openDialog, closeDialog }: any) {
-const {userDetail,setUserDetail} = useContext(UserDetailContext)
-const CreateUser = useMutation(api.users.CreateUser)
+  const { userDetail, setUserDetail } = useContext(UserDetailContext);
+  const CreateUser = useMutation(api.users.CreateUser);
 
-const googleLogin = useGoogleLogin({
+  const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
-      console.log(tokenResponse);
-      const userInfo = await axios.get(
-        'https://www.googleapis.com/oauth2/v3/userinfo',
-        { headers: { Authorization: 'Bearer '+ tokenResponse?.access_token } },
+      // Step 1: Get Google profile
+      const { data: googleUser } = await axios.get(
+        "https://www.googleapis.com/oauth2/v3/userinfo",
+        { headers: { Authorization: "Bearer " + tokenResponse?.access_token } }
       );
-  
-      console.log(userInfo);
-      const user = userInfo.data
-      await CreateUser({
-        name:user?.name,
-        email:user?.email,
-        picture:user?.picture,
-        uid:uuid4()
-      })
 
+      // Step 2: Create or return existing Convex user
+      const convexUser = await CreateUser({
+        name: googleUser?.name,
+        email: googleUser?.email,
+        picture: googleUser?.picture,
+        uid: uuid4(),
+      });
+      console.log("user from convex  : ",convexUser)
+        const user = convexUser
+      // Step 3: Save Convex user (with _id) to localStorage and context
+      if (typeof window !== "undefined") {
+        console.log("Saving to localStorage:", user);
+        localStorage.setItem("user", JSON.stringify(user));
+        console.log("Just saved:", localStorage.getItem("user"));
+      }
+      setUserDetail(user);
+      console.log("user from convex  : ",convexUser)
 
-        if(typeof window!==undefined){
-          localStorage.setItem('user',JSON.stringify(user))
-        }
-
-      setUserDetail(userInfo?.data)
-      //save data into database
-      closeDialog(false)
+      // Step 4: Close dialog
+      closeDialog(false);
     },
-    onError: errorResponse => console.log(errorResponse),
+    onError: (errorResponse) => console.error(errorResponse),
   });
+
+  
+
   return (
     <Dialog open={openDialog} onOpenChange={closeDialog}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle></DialogTitle>
-          <DialogDescription >
-             <div className="flex flex-col items-center justify-center gap-3">
-             <h2 className="font-bold text-center text-2xl text-white">{Lookup.SIGNIN_HEADING}</h2>
-             <p className="mt-2 text-center">{Lookup.SIGNIN_SUBHEADING}</p>
-             <Button className="bg-blue-500 text-white hover:bg-blue-400 cursor-pointer mt-3" onClick={()=>googleLogin()}>Sign In With Google</Button>
-             <p>{Lookup.SIGNIn_AGREEMENT_TEXT}</p>
-             </div>
-        
+          <DialogDescription asChild>
+            <div className="flex flex-col items-center justify-center gap-3">
+              <h2 className="font-bold text-center text-2xl text-white">
+                {Lookup.SIGNIN_HEADING}
+              </h2>
+              <p className="mt-2 text-center">{Lookup.SIGNIN_SUBHEADING}</p>
+              <Button
+                className="bg-blue-500 text-white hover:bg-blue-400 cursor-pointer mt-3"
+                onClick={() => googleLogin()}
+              >
+                Sign In With Google
+              </Button>
+              <p>{Lookup.SIGNIn_AGREEMENT_TEXT}</p>
+            </div>
           </DialogDescription>
         </DialogHeader>
       </DialogContent>
